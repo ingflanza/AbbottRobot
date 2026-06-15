@@ -5,7 +5,7 @@
 
 /* Motor Identifiers */
 #define MOTOR1  TIM_CHANNEL_1
-#define MOTOR2  TIM_CHANNEL_21
+#define MOTOR2  TIM_CHANNEL_2
 
 #define MOTOR_RIGHT MOTOR1
 #define MOTOR_LEFT  MOTOR2
