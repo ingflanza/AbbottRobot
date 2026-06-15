@@ -24,20 +24,20 @@ static uint16_t motor_calculate_pwm(uint32_t motor, uint8_t direction, uint16_t 
     return MOTOR_PWM_NEUTRAL;
   }
 
-  /* Motor1: forward decreases PWM (1500→1000), backward increases (1500→2000) */
+  /* Motor1: forward increases PWM (1500→2000), backward decreases (1500→1000) */
   if (motor == MOTOR1) {
     if (direction == MOTOR_DIRECTION_FORWARD) {
-      pwm_value = MOTOR_PWM_NEUTRAL - velocity;
-    } else {
       pwm_value = MOTOR_PWM_NEUTRAL + velocity;
+    } else {
+      pwm_value = MOTOR_PWM_NEUTRAL - velocity;
     }
   }
-  /* Motor2: forward increases PWM (1500→2000), backward decreases (1500→1000) */
+  /* Motor2: forward decreases PWM (1500→1000), backward increases (1500→2000) */
   else if (motor == MOTOR2) {
     if (direction == MOTOR_DIRECTION_FORWARD) {
-      pwm_value = MOTOR_PWM_NEUTRAL + velocity;
-    } else {
       pwm_value = MOTOR_PWM_NEUTRAL - velocity;
+    } else {
+      pwm_value = MOTOR_PWM_NEUTRAL + velocity;
     }
   }
 
@@ -49,6 +49,17 @@ static uint16_t motor_calculate_pwm(uint32_t motor, uint8_t direction, uint16_t 
   }
 
   return pwm_value;
+}
+
+void motor_init(void)
+{
+  /* Start PWM on both motor channels */
+  HAL_TIM_PWM_Start(&htim3, MOTOR1);
+  HAL_TIM_PWM_Start(&htim3, MOTOR2);
+
+  /* Set both motors to neutral position */
+  motor_stop(MOTOR1);
+  motor_stop(MOTOR2);
 }
 
 void motor_run(uint32_t motor, uint8_t direction, uint16_t velocity)

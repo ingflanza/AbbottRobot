@@ -5,7 +5,10 @@
 
 /* Motor Identifiers */
 #define MOTOR1  TIM_CHANNEL_1
-#define MOTOR2  TIM_CHANNEL_2
+#define MOTOR2  TIM_CHANNEL_21
+
+#define MOTOR_RIGHT MOTOR1
+#define MOTOR_LEFT  MOTOR2
 
 /* PWM Value Definitions */
 #define MOTOR_PWM_NEUTRAL  1500  /* Both motors stopped */
@@ -19,9 +22,16 @@
 #define MOTOR_DIRECTION_STOP      2
 
 /**
+ * @brief  Initialize the motor module (starts PWM and sets neutral position)
+ * @note   Must be called once during initialization
+ * @retval None
+ */
+void motor_init(void);
+
+/**
  * @brief  Run a motor with specified direction and velocity
- * @note   Motor1: forward = PWM 1500→1000, backward = PWM 1500→2000
- *         Motor2: forward = PWM 1500→2000, backward = PWM 1500→1000
+ * @note   Motor1: forward = PWM 1500→2000, backward = PWM 1500→1000
+ *         Motor2: forward = PWM 1500→1000, backward = PWM 1500→2000
  * @param  motor: Motor identifier (MOTOR1 or MOTOR2)
  * @param  direction: MOTOR_DIRECTION_FORWARD, MOTOR_DIRECTION_BACKWARD, or MOTOR_DIRECTION_STOP
  * @param  velocity: Velocity 0-500 (0=neutral, 500=maximum speed)

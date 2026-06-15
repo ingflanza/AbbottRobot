@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "motor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -94,35 +94,32 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+  motor_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
-  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 1500);
-  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 1500);
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    
-    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
-    __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 1000);
-    __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 2000);
+    motor_stop(MOTOR1);
     HAL_Delay(5000);
+
+    motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 250);
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
+    HAL_Delay(5000);
+
+    motor_stop(MOTOR1);
+    HAL_Delay(5000);
+
+    motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 250);
     HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
-    __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 1500);
-    __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 1500);
-    HAL_Delay(5000);
-    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
-    __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 2000);
-    __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 1000);
     HAL_Delay(5000);
     
   }
+
   /* USER CODE END 3 */
 }
 
