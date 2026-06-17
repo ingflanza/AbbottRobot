@@ -14,7 +14,7 @@
 #define MOTOR_PWM_NEUTRAL  1500  /* Both motors stopped */
 #define MOTOR_PWM_MIN      1000  /* Minimum PWM (maximum velocity) */
 #define MOTOR_PWM_MAX      2000  /* Maximum PWM (maximum velocity opposite direction) */
-#define MOTOR_VELOCITY_MAX 500   /* Maximum velocity delta from neutral */
+#define MOTOR_VELOCITY_MAX 100   /* Maximum velocity delta from neutral */
 
 /* Motor Direction Definitions */
 #define MOTOR_DIRECTION_FORWARD   0
@@ -34,7 +34,7 @@ void motor_init(void);
  *         Motor2: forward = PWM 1500→1000, backward = PWM 1500→2000
  * @param  motor: Motor identifier (MOTOR1 or MOTOR2)
  * @param  direction: MOTOR_DIRECTION_FORWARD, MOTOR_DIRECTION_BACKWARD, or MOTOR_DIRECTION_STOP
- * @param  velocity: Velocity 0-500 (0=neutral, 500=maximum speed)
+ * @param  velocity: Velocity 0-100 (0=neutral, 100=maximum speed)
  * @retval None
  */
 void motor_run(uint32_t motor, uint8_t direction, uint16_t velocity);

@@ -8,7 +8,7 @@ extern TIM_HandleTypeDef htim3;
  * @brief  Calculate PWM value based on motor, direction, and velocity
  * @param  motor: Motor identifier
  * @param  direction: Motor direction
- * @param  velocity: Velocity offset (0-500)
+ * @param  velocity: Velocity offset (0-100)
  * @retval PWM compare value (1000-2000)
  */
 static uint16_t motor_calculate_pwm(uint32_t motor, uint8_t direction, uint16_t velocity)
@@ -23,6 +23,9 @@ static uint16_t motor_calculate_pwm(uint32_t motor, uint8_t direction, uint16_t 
   if (direction == MOTOR_DIRECTION_STOP) {
     return MOTOR_PWM_NEUTRAL;
   }
+
+  /* Scale velocity from 0-100 range to 0-500 PWM delta */
+  velocity = velocity * 5;
 
   /* Motor1: forward increases PWM (1500→2000), backward decreases (1500→1000) */
   if (motor == MOTOR1) {

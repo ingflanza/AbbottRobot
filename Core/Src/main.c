@@ -54,7 +54,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
-
+static void HAL_DelayUs(uint32_t us);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -70,7 +70,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -104,20 +104,41 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+    HAL_GPIO_WritePin(GPIOA, USPing_Pin, GPIO_PIN_RESET);
+    HAL_DelayUs(2);
+    HAL_GPIO_WritePin(GPIOA, USPing_Pin, GPIO_PIN_SET);
+    HAL_DelayUs(5);
+    HAL_GPIO_WritePin(GPIOA, USPing_Pin, GPIO_PIN_RESET);
+
+    GPIO_InitStruct.Pin = USPing_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);    
+
+    HAL_Delay(1000);
+
+    GPIO_InitStruct.Pin = USPing_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    /*
     motor_stop(MOTOR1);
     HAL_Delay(5000);
 
-    motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 250);
+    motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 50);
     HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
     HAL_Delay(5000);
 
     motor_stop(MOTOR1);
     HAL_Delay(5000);
 
-    motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 250);
+    motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 50);
     HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
     HAL_Delay(5000);
-    
+    */
   }
 
   /* USER CODE END 3 */
@@ -284,7 +305,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LD2_Pin|USPing_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -292,12 +313,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LD2_Pin */
-  GPIO_InitStruct.Pin = LD2_Pin;
+  /*Configure GPIO pins : LD2_Pin USPing_Pin */
+  GPIO_InitStruct.Pin = LD2_Pin|USPing_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
@@ -305,6 +326,22 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+/**
+  * @brief  Delay function
+  * @param  us: delay in microseconds
+  * @retval None
+  */
+
+#define SYSTICK_LOAD (SystemCoreClock/1000000U)
+#define SYSTICK_DELAY_CALIB (SYSTICK_LOAD >> 1)
+
+static void HAL_DelayUs(uint32_t us)
+{
+  uint32_t start = SysTick->VAL;
+  uint32_t ticks = (us * SYSTICK_LOAD) - SYSTICK_DELAY_CALIB;
+  while((start - SysTick->VAL) < ticks);
+}
 
 /* USER CODE END 4 */
 
