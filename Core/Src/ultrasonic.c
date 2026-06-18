@@ -13,14 +13,14 @@
 #define US_STATE_WAIT_RISING    1
 #define US_STATE_WAIT_FALLING   2
 
-#define TRIGGER_INTERVAL        300  // Time between measurements in milliseconds
-
 /* Static variables for state machine */
 static uint8_t us_state = US_STATE_TRIGGER;        // Current state
 static uint8_t us_edge_flag = 0;                   // Flag set by interrupt when edge captured
-static uint32_t us_timing = 0;                     // Timing for TRIGGER_INTERVAL ms delay
+static uint32_t us_timing = 0;                     // Timing for ULTRASONIC_TRIGGER_INTERVAL ms delay
+static uint32_t us_timeout = 0;                    // Timeout for waiting for edges
 static uint32_t us_distance = 0;                   // Measured distance (pulse width in ticks)
 static uint32_t us_capture_value = 0;              // First capture value
+static uint8_t us_error = 0;                       // Error flag for measurement failures
 
 /**
   * @brief Initialize ultrasonic module
@@ -33,26 +33,28 @@ void ultrasonic_init(void)
   us_distance = 0;
   us_capture_value = 0;
   us_timing = elapsed_set();
+  us_error = 0;
 }
 
 /**
   * @brief Process ultrasonic measurement state machine
   * The purpouse of this function is to be called in the main loop to handle the ultrasonic measurement process.
   * It triggers the ultrasonic sensor, waits for the echo, captures the timing of the rising and falling edges,
-  * and saves the pulse width. The process is repeated every TRIGGER_INTERVAL milliseconds. The function relies on the timer input capture
+  * and saves the pulse width. The process is repeated every ULTRASONIC_TRIGGER_INTERVAL milliseconds. The function relies on the timer input capture
   * interrupt to set a flag when an edge is captured.
   * Implements 3-state machine:
-  *   State 0 (US_STATE_TRIGGER): Wait TRIGGER_INTERVAL ms, send trigger pulse, go to wait_rising
+  *   State 0 (US_STATE_TRIGGER): Wait ULTRASONIC_TRIGGER_INTERVAL ms, send trigger pulse, go to wait_rising
   *   State 1 (US_STATE_WAIT_RISING): Wait for rising edge flag, capture value, switch to falling, go to wait_falling
   *   State 2 (US_STATE_WAIT_FALLING): Wait for falling edge flag, capture value, calculate distance, return to trigger
   * @retval None
   */
 void ultrasonic_measure(void)
 {
-  switch (us_state) {
+  switch (us_state)
+  {
     case US_STATE_TRIGGER:
-      /* Wait TRIGGER_INTERVAL ms before sending trigger */
-      if (!elapsed_check(us_timing + TRIGGER_INTERVAL)) return;
+      /* Wait ULTRASONIC_TRIGGER_INTERVAL ms before sending trigger */
+      if (!elapsed_check(us_timing + ULTRASONIC_TRIGGER_INTERVAL)) return;
 
       /* Set port as output for trigger pulse */
       GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -84,11 +86,25 @@ void ultrasonic_measure(void)
       __HAL_TIM_SET_CAPTUREPOLARITY(&ULTRASONIC_TIMER, ULTRASONIC_TIMER_CHANNEL, TIM_INPUTCHANNELPOLARITY_RISING);
       HAL_TIM_IC_Start_IT(&ULTRASONIC_TIMER, ULTRASONIC_TIMER_CHANNEL);
 
+      /* Timeout for waiting for edges */
+      us_timeout = elapsed_set();
+
       break;
 
     case US_STATE_WAIT_RISING:
-      /* Wait for rising edge to be captured */
-      if (0 == us_edge_flag) return;
+      /* Wait for rising edge to be captured, if timeout occurs, return to trigger state */
+      if (0 == us_edge_flag)
+      {
+
+        if (elapsed_check(us_timeout + 2))
+        {
+          us_state = US_STATE_TRIGGER;
+          us_timing = elapsed_set();
+          us_error = 1; // Set error flag if rising edge not captured in time
+        }
+        return;
+
+      }
 
       /* Read and save the rising edge capture value */
       us_capture_value = HAL_TIM_ReadCapturedValue(&ULTRASONIC_TIMER, ULTRASONIC_TIMER_CHANNEL);
@@ -100,11 +116,23 @@ void ultrasonic_measure(void)
       us_edge_flag = 0;
       us_state = US_STATE_WAIT_FALLING;
 
+      /* Timeout for waiting for edges */
+      us_timeout = elapsed_set();
+
       break;
 
     case US_STATE_WAIT_FALLING:
-      /* Wait for falling edge to be captured */
-      if (0 == us_edge_flag) return;
+      /* Wait for falling edge to be captured, if timeout occurs, return to trigger state */
+      if (0 == us_edge_flag)
+      {
+        if (elapsed_check(us_timeout + 200))
+        {
+          us_state = US_STATE_TRIGGER;
+          us_timing = elapsed_set();
+          us_error = 1; // Set error flag if falling edge not captured in time
+        }
+        return;
+      }
 
       /* Read the falling edge capture value */
       uint32_t capture_value = HAL_TIM_ReadCapturedValue(&ULTRASONIC_TIMER, ULTRASONIC_TIMER_CHANNEL);
@@ -147,4 +175,13 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 uint32_t ultrasonic_distance(void)
 {
   return us_distance;
+}
+
+/**
+  * @brief Get the error flag
+  * @retval 1 if measurement has failed, 0 otherwise
+  */
+uint8_t ultrasonic_error(void)
+{
+  return us_error;
 }
