@@ -21,8 +21,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 #include "motor.h"
 #include "elapsed.h"
+#include "ultrasonic.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,6 +64,26 @@ static void MX_TIM2_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+int _write(int file, char *ptr, int len)
+{
+  int DataIdx;
+
+  for (DataIdx=0; DataIdx<len; DataIdx++)
+  {
+    HAL_UART_Transmit(&huart2, (uint8_t *)ptr++, 1, 100);
+  }
+
+  return len;
+}
+
+void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
+{
+  if (htim->Instance == TIM2)
+  {
+    ultrasonic_measure();
+  }
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -72,7 +94,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -97,35 +119,53 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  motor_init();
+  //motor_init();
+  ultrasonic_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  printf("TomiRobot Starting...\r\n");
+  uint32_t start_time = elapsed_set();
+
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 
-    HAL_GPIO_WritePin(GPIOA, USPing_Pin, GPIO_PIN_RESET);
-    elapsed_delayus(2);
-    HAL_GPIO_WritePin(GPIOA, USPing_Pin, GPIO_PIN_SET);
-    elapsed_delayus(5);
-    HAL_GPIO_WritePin(GPIOA, USPing_Pin, GPIO_PIN_RESET);
+    if (elapsed_check(start_time + 1000))
+    {
+      printf("Sending trigger\r\n");
+      ultrasonic_trigger();
+      start_time = elapsed_set();
 
-    GPIO_InitStruct.Pin = USPing_Pin;
+      printf("Distance: %lu cm\r\n", ultrasonic_distance());
+    }
+
+    /*
+
+    HAL_GPIO_WritePin(ULTRASONIC_PORT, ULTRASONIC_PIN, GPIO_PIN_RESET);
+    elapsed_delayus(2);
+    HAL_GPIO_WritePin(ULTRASONIC_PORT, ULTRASONIC_PIN, GPIO_PIN_SET);
+    elapsed_delayus(5);
+    HAL_GPIO_WritePin(ULTRASONIC_PORT, ULTRASONIC_PIN, GPIO_PIN_RESET);
+
+    GPIO_InitStruct.Pin = ULTRASONIC_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);    
+    HAL_GPIO_Init(ULTRASONIC_PORT, &GPIO_InitStruct);    
 
     HAL_Delay(1000);
 
-    GPIO_InitStruct.Pin = USPing_Pin;
+    GPIO_InitStruct.Pin = ULTRASONIC_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    HAL_GPIO_Init(ULTRASONIC_PORT, &GPIO_InitStruct);
+    */
+    
 
     /*
     motor_stop(MOTOR1);
@@ -356,7 +396,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, LD2_Pin|USPing_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -364,12 +404,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LD2_Pin USPing_Pin */
-  GPIO_InitStruct.Pin = LD2_Pin|USPing_Pin;
+  /*Configure GPIO pin : LD2_Pin */
+  GPIO_InitStruct.Pin = LD2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 

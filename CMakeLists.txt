@@ -47,6 +47,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
     Core/Src/motor.c
     Core/Src/elapsed.c
+    Core/Src/ultrasonic.c
 )
 
 # Add include paths

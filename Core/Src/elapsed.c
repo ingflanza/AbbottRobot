@@ -7,7 +7,7 @@
 #include "elapsed.h"
 #include "main.h"
 
-#define SYSTICK_LOAD (SystemCoreClock/1000000U)
+#define SYSTICK_LOAD        (SystemCoreClock/1000000U)
 #define SYSTICK_DELAY_CALIB (SYSTICK_LOAD >> 1)
 
 /**
