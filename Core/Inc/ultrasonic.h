@@ -22,20 +22,14 @@
 void ultrasonic_init(void);
 
 /**
-  * @brief Trigger ultrasonic measurement pulse
-  * @retval None
-  */
-void ultrasonic_trigger(void);
-
-/**
-  * @brief Process ultrasonic measurement (called from timer interrupt)
+  * @brief Process ultrasonic measurement state machine
   * @retval None
   */
 void ultrasonic_measure(void);
 
 /**
   * @brief Get last measured distance
-  * @retval Distance in centimeters
+  * @retval Distance (pulse width in timer ticks)
   */
 uint32_t ultrasonic_distance(void);
 
