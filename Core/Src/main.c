@@ -76,14 +76,6 @@ int _write(int file, char *ptr, int len)
   return len;
 }
 
-void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
-{
-  if (htim->Instance == TIM2)
-  {
-    ultrasonic_measure();
-  }
-}
-
 /* USER CODE END 0 */
 
 /**
@@ -135,13 +127,14 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-    if (elapsed_check(start_time + 1000))
-    {
-      printf("Sending trigger\r\n");
-      ultrasonic_trigger();
-      start_time = elapsed_set();
+    /* Process ultrasonic measurement state machine */
+    ultrasonic_measure();
 
-      printf("Distance: %lu cm\r\n", ultrasonic_distance());
+    /* Print distance every 2 seconds */
+    if (elapsed_check(start_time + 2000))
+    {
+      printf("Distance: %lu ticks\r\n", ultrasonic_distance());
+      start_time = elapsed_set();
     }
 
     /*

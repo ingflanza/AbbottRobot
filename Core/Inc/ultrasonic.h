@@ -15,6 +15,9 @@
 #define ULTRASONIC_TIMER          htim2
 #define ULTRASONIC_TIMER_CHANNEL  TIM_CHANNEL_1
 
+/* Time between measurements in milliseconds */
+#define ULTRASONIC_TRIGGER_INTERVAL        500
+
 /**
   * @brief Initialize ultrasonic module
   * @retval None
@@ -22,21 +25,21 @@
 void ultrasonic_init(void);
 
 /**
-  * @brief Trigger ultrasonic measurement pulse
-  * @retval None
-  */
-void ultrasonic_trigger(void);
-
-/**
-  * @brief Process ultrasonic measurement (called from timer interrupt)
+  * @brief Process ultrasonic measurement state machine
   * @retval None
   */
 void ultrasonic_measure(void);
 
 /**
   * @brief Get last measured distance
-  * @retval Distance in centimeters
+  * @retval Distance (pulse width in timer ticks)
   */
 uint32_t ultrasonic_distance(void);
+
+/**
+  * @brief Get the error flag
+  * @retval 1 if measurement has failed, 0 otherwise
+  */
+uint8_t ultrasonic_error(void);
 
 #endif /* __ULTRASONIC_H__ */
