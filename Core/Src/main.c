@@ -135,6 +135,16 @@ int main(void)
     {
       printf("Distance: %lu ticks\r\n", ultrasonic_distance());
       start_time = elapsed_set();
+
+      if (HAL_GPIO_ReadPin(LineSensor2_GPIO_Port, LineSensor2_Pin) == GPIO_PIN_SET)
+      {
+        printf("Line Sensor 2: HIGH\r\n");
+      }
+      else
+      {
+        printf("Line Sensor 2: LOW\r\n");
+      }
+      
     }
 
     /*
@@ -396,6 +406,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : LineSensor2_Pin */
+  GPIO_InitStruct.Pin = LineSensor2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(LineSensor2_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LD2_Pin */
   GPIO_InitStruct.Pin = LD2_Pin;
