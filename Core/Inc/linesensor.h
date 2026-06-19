@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
-  * @file           : elapsed.h
-  * @brief          : Elapsed time and delay utilities
+  * @file           : linesensor.h
+  * @brief          : Line sensor (TCRT5000) ADC driver
   * @author         : Federico Lanza
   * @date           : 2026-06-19
   ******************************************************************************
@@ -16,29 +16,26 @@
   *
   ******************************************************************************
   */
-#ifndef __ELAPSED_H__
-#define __ELAPSED_H__
+#ifndef __LINESENSOR_H__
+#define __LINESENSOR_H__
 
 #include <stdint.h>
 
+/* Sensor identifiers */
+#define LINE_SENSOR_1  1U
+#define LINE_SENSOR_2  2U
+
 /**
-  * @brief  Delay function with microsecond precision
-  * @param  us: delay in microseconds
+  * @brief Initialize line sensor module state variables
   * @retval None
   */
-void elapsed_delayus(uint32_t us);
+void linesensor_init(void);
 
 /**
-  * @brief  Get current SysTick timer value
-  * @retval Current SysTick value in milliseconds
+  * @brief Read one line sensor value through ADC1
+  * @param sensor: LINE_SENSOR_1 or LINE_SENSOR_2
+  * @retval ADC value (0-4095), 0 on invalid sensor or HAL error
   */
-uint32_t elapsed_set(void);
+uint16_t linesensor_read(uint8_t sensor);
 
-/**
-  * @brief  Check if elapsed time has reached the target value
-  * @param  value: target value to compare against
-  * @retval 1 if current SysTick >= value, 0 otherwise
-  */
-uint8_t elapsed_check(uint32_t value);
-
-#endif /* __ELAPSED_H__ */
+#endif /* __LINESENSOR_H__ */

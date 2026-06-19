@@ -48,6 +48,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     Core/Src/motor.c
     Core/Src/elapsed.c
     Core/Src/ultrasonic.c
+    Core/Src/linesensor.c
 )
 
 # Add include paths
