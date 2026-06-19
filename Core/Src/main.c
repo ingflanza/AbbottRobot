@@ -25,6 +25,7 @@
 #include "motor.h"
 #include "elapsed.h"
 #include "ultrasonic.h"
+#include "linesensor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -117,6 +118,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //motor_init();
   ultrasonic_init();
+  linesensor_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -137,17 +139,16 @@ int main(void)
     /* Print distance every 2 seconds */
     if (elapsed_check(start_time + 2000))
     {
-      printf("Distance: %lu ticks\r\n", ultrasonic_distance());
-      start_time = elapsed_set();
+      //uint16_t line_sensor_1 = linesensor_read(LINE_SENSOR_1);
+      uint32_t read_start = elapsed_set();
+      uint16_t line_sensor_2 = linesensor_read(LINE_SENSOR_2);
+      uint32_t read_end = elapsed_set();
+      printf("Line sensor read time: %lu us\r\n", read_end - read_start);
 
-      if (HAL_GPIO_ReadPin(LineSensor2_GPIO_Port, LineSensor2_Pin) == GPIO_PIN_SET)
-      {
-        printf("Line Sensor 2: HIGH\r\n");
-      }
-      else
-      {
-        printf("Line Sensor 2: LOW\r\n");
-      }
+      printf("Distance: %lu ticks\r\n", ultrasonic_distance());
+      //printf("Line Sensor 1 (PA4): %u\r\n", line_sensor_1);
+      printf("Line Sensor 2 (PA1): %u\r\n", line_sensor_2);
+      start_time = elapsed_set();
       
     }
 

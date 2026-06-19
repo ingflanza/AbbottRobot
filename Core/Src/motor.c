@@ -1,3 +1,21 @@
+/**
+  ******************************************************************************
+  * @file           : motor.c
+  * @brief          : Motor control module source
+  * @author         : Federico Lanza
+  * @date           : 2026-06-19
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2026 Federico Lanza.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 #include "motor.h"
 #include "main.h"
 
