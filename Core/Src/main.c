@@ -136,21 +136,18 @@ int main(void)
     /* Process ultrasonic measurement state machine */
     ultrasonic_measure();
 
-    /* Print distance every 2 seconds */
-    if (elapsed_check(start_time + 2000))
+    if (elapsed_check(start_time + 1000))
     {
-      //uint16_t line_sensor_1 = linesensor_read(LINE_SENSOR_1);
-      uint32_t read_start = elapsed_set();
+      uint16_t line_sensor_1 = linesensor_read(LINE_SENSOR_1);
       uint16_t line_sensor_2 = linesensor_read(LINE_SENSOR_2);
-      uint32_t read_end = elapsed_set();
-      printf("Line sensor read time: %lu us\r\n", read_end - read_start);
 
       printf("Distance: %lu ticks\r\n", ultrasonic_distance());
-      //printf("Line Sensor 1 (PA4): %u\r\n", line_sensor_1);
-      printf("Line Sensor 2 (PA1): %u\r\n", line_sensor_2);
+      printf("Line Sensor 1: %u\r\n", line_sensor_1);
+      printf("Line Sensor 2: %u\r\n", line_sensor_2);
       start_time = elapsed_set();
       
     }
+
 
     /*
 
@@ -174,22 +171,26 @@ int main(void)
     HAL_GPIO_Init(ULTRASONIC_PORT, &GPIO_InitStruct);
     */
     
-
     /*
     motor_stop(MOTOR1);
+    motor_stop(MOTOR2);
     HAL_Delay(5000);
 
     motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 50);
+    motor_run(MOTOR2, MOTOR_DIRECTION_FORWARD, 50);
     HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
     HAL_Delay(5000);
 
     motor_stop(MOTOR1);
+    motor_stop(MOTOR2);
     HAL_Delay(5000);
 
     motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 50);
+    motor_run(MOTOR2, MOTOR_DIRECTION_FORWARD, 50);
     HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
     HAL_Delay(5000);
     */
+    
   }
 
   /* USER CODE END 3 */
@@ -389,11 +390,11 @@ static void MX_TIM3_Init(void)
   sConfigOC.Pulse = 0;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
   {
     Error_Handler();
   }
-  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
   {
     Error_Handler();
   }

@@ -61,16 +61,22 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define B1_Pin GPIO_PIN_13
 #define B1_GPIO_Port GPIOC
-#define LineSensor2_Pin GPIO_PIN_1
-#define LineSensor2_GPIO_Port GPIOA
+#define US_TRIGGER_Pin GPIO_PIN_0
+#define US_TRIGGER_GPIO_Port GPIOA
+#define LINE_SENSOR_2_Pin GPIO_PIN_1
+#define LINE_SENSOR_2_GPIO_Port GPIOA
 #define USART_TX_Pin GPIO_PIN_2
 #define USART_TX_GPIO_Port GPIOA
 #define USART_RX_Pin GPIO_PIN_3
 #define USART_RX_GPIO_Port GPIOA
-#define LineSensor1_Pin GPIO_PIN_4
-#define LineSensor1_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
+#define LINE_SENSOR_1_Pin GPIO_PIN_6
+#define LINE_SENSOR_1_GPIO_Port GPIOA
+#define PWM_MOTOR_2_Pin GPIO_PIN_7
+#define PWM_MOTOR_2_GPIO_Port GPIOA
+#define PWM_MOTOR_1_Pin GPIO_PIN_0
+#define PWM_MOTOR_1_GPIO_Port GPIOB
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14

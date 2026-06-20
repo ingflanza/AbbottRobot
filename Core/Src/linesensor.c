@@ -60,10 +60,10 @@ uint16_t linesensor_read(uint8_t sensor)
   switch (sensor)
   {
     case LINE_SENSOR_1:
-      sConfig.Channel = ADC_CHANNEL_4;
+      sConfig.Channel = LINE_SENSOR_1_ADC_CHANNEL;
       break;
     case LINE_SENSOR_2:
-      sConfig.Channel = ADC_CHANNEL_1;
+      sConfig.Channel = LINE_SENSOR_2_ADC_CHANNEL;
       break;
     default:
       return 0u;

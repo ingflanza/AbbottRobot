@@ -22,7 +22,7 @@
 #include <stdint.h>
 
 /* Motor Identifiers */
-#define MOTOR1  TIM_CHANNEL_1
+#define MOTOR1  TIM_CHANNEL_3
 #define MOTOR2  TIM_CHANNEL_2
 
 #define MOTOR_RIGHT MOTOR1

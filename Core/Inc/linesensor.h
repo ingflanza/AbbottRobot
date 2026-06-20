@@ -21,6 +21,9 @@
 
 #include <stdint.h>
 
+#define LINE_SENSOR_1_ADC_CHANNEL  ADC_CHANNEL_1
+#define LINE_SENSOR_2_ADC_CHANNEL  ADC_CHANNEL_6
+
 /* Sensor identifiers */
 #define LINE_SENSOR_1  1U
 #define LINE_SENSOR_2  2U
