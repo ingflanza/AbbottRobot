@@ -1,4 +1,4 @@
-# 🤖 Abbott the Robot
+# Abbott the Robot
 
 ![Abbott the Robot](abbott-the-robot.jpg)
 
@@ -8,7 +8,7 @@ This repository contains the C/C++ firmware built around the powerful ARM Cortex
 
 ---
 
-## ✨ Features
+## Features
 
 Abbott comes packed with features perfect for learning autonomous navigation, sensor integration, and motor control:
 
@@ -20,7 +20,7 @@ Abbott comes packed with features perfect for learning autonomous navigation, se
 
 ---
 
-## 🛠️ Hardware Requirements
+## Hardware Requirements
 
 To build and run Abbott, you will need the following core components:
 
@@ -35,7 +35,7 @@ To build and run Abbott, you will need the following core components:
 
 ---
 
-## 📍 Configuration
+## Configuration
 
 *Note: Comming*
 
@@ -45,7 +45,7 @@ To build and run Abbott, you will need the following core components:
 
 ---
 
-## 💻 Software Setup & Installation
+## Software Setup & Installation
 
 This project is configured using **STM32CubeIDE**. 
 
