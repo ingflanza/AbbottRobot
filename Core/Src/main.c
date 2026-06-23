@@ -116,7 +116,7 @@ int main(void)
   MX_TIM2_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-  //motor_init();
+  motor_init();
   ultrasonic_init();
   linesensor_init();
   /* USER CODE END 2 */
@@ -136,6 +136,7 @@ int main(void)
     /* Process ultrasonic measurement state machine */
     ultrasonic_measure();
 
+    /*
     if (elapsed_check(start_time + 1000))
     {
       uint16_t line_sensor_1 = linesensor_read(LINE_SENSOR_1);
@@ -147,50 +148,32 @@ int main(void)
       start_time = elapsed_set();
       
     }
-
-
-    /*
-
-    HAL_GPIO_WritePin(ULTRASONIC_PORT, ULTRASONIC_PIN, GPIO_PIN_RESET);
-    elapsed_delayus(2);
-    HAL_GPIO_WritePin(ULTRASONIC_PORT, ULTRASONIC_PIN, GPIO_PIN_SET);
-    elapsed_delayus(5);
-    HAL_GPIO_WritePin(ULTRASONIC_PORT, ULTRASONIC_PIN, GPIO_PIN_RESET);
-
-    GPIO_InitStruct.Pin = ULTRASONIC_PIN;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(ULTRASONIC_PORT, &GPIO_InitStruct);    
-
-    HAL_Delay(1000);
-
-    GPIO_InitStruct.Pin = ULTRASONIC_PIN;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(ULTRASONIC_PORT, &GPIO_InitStruct);
     */
     
-    /*
     motor_stop(MOTOR1);
     motor_stop(MOTOR2);
-    HAL_Delay(5000);
+    HAL_Delay(2000);
 
+    /* Straight forward */
     motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 50);
     motor_run(MOTOR2, MOTOR_DIRECTION_FORWARD, 50);
-    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
-    HAL_Delay(5000);
+    HAL_Delay(2500);
 
-    motor_stop(MOTOR1);
-    motor_stop(MOTOR2);
-    HAL_Delay(5000);
+    /* Turn right */
+    //motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 50);
+    //motor_run(MOTOR2, MOTOR_DIRECTION_FORWARD, 10);
+    //HAL_Delay(1500);
 
-    motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 50);
-    motor_run(MOTOR2, MOTOR_DIRECTION_FORWARD, 50);
-    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
-    HAL_Delay(5000);
-    */
-    
+    // /* Straight forward */
+    // motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 25);
+    // motor_run(MOTOR2, MOTOR_DIRECTION_FORWARD, 25);
+    // HAL_Delay(2500);
+
+    // /* Turn left */
+    // motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 10);
+    // motor_run(MOTOR2, MOTOR_DIRECTION_FORWARD, 50);
+    // HAL_Delay(1500);
+
   }
 
   /* USER CODE END 3 */

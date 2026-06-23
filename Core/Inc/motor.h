@@ -29,10 +29,9 @@
 #define MOTOR_LEFT  MOTOR2
 
 /* PWM Value Definitions */
-#define MOTOR_PWM_NEUTRAL  1500  /* Both motors stopped */
-#define MOTOR_PWM_MIN      1000  /* Minimum PWM (maximum velocity) */
-#define MOTOR_PWM_MAX      2000  /* Maximum PWM (maximum velocity opposite direction) */
-#define MOTOR_VELOCITY_MAX 100   /* Maximum velocity delta from neutral */
+#define MOTOR1_PWM_NEUTRAL  1370  /* motor1 stopped */
+#define MOTOR2_PWM_NEUTRAL  1325  /* motor2 stopped */
+#define MOTOR_VELOCITY_MAX	100   /* Maximum velocity delta from neutral in percent 0..100 */
 
 /* Motor Direction Definitions */
 #define MOTOR_DIRECTION_FORWARD   0
@@ -63,5 +62,11 @@ void motor_run(uint32_t motor, uint8_t direction, uint16_t velocity);
  * @retval None
  */
 void motor_stop(uint32_t motor);
+
+/**
+ * @brief  Stop all motors (set to neutral position)
+ * @retval None
+ */
+void motor_stop_all();
 
 #endif /* MOTOR_H */
