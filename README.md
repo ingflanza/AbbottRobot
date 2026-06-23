@@ -1,4 +1,4 @@
-# 🤖 Abbott the Robot
+# Abbott the Robot
 
 ![Abbott the Robot](abbott-the-robot.jpg)
 
@@ -8,7 +8,7 @@ This repository contains the C/C++ firmware built around the powerful ARM Cortex
 
 ---
 
-## ✨ Features
+## Features
 
 Abbott comes packed with features perfect for learning autonomous navigation, sensor integration, and motor control:
 
@@ -20,22 +20,22 @@ Abbott comes packed with features perfect for learning autonomous navigation, se
 
 ---
 
-## 🛠️ Hardware Requirements
+## Hardware Requirements
 
 To build and run Abbott, you will need the following core components:
 
-* **Microcontroller:** STM32F411 Development Board (e.g., "Black Pill")
-* **Motor Driver:** Dual DC Motor Driver (e.g., TB6612FNG, DRV8833, or L298N)
-* **Actuators:** 2x DC Gear Motors with custom/standard wheels
+* **CPU / Microcontroller:** STM32F4xx Development Board (e.g., STM32F411RTE Nucleo-64 board or similar)
+* **Motors:** Two modified futaba S3003 servos
 * **Sensors:**
-    * 1x HC-SR04 Ultrasonic Distance Sensor
-    * 2x IR Line Tracking Sensors (e.g., TCRT5000 modules)
-* **Feedback:** Piezo buzzer (passive), standard 5mm LEDs
-* **Power:** LiPo battery (e.g., 2S 7.4V) with a 5V buck converter/voltage regulator to power the STM32.
+    * 1x HC-SR04 Ultrasonic Distance Sensor or Seeedstudio Grove sensor (1-pin trigger / reception)
+    * 2x IR Line Tracking Sensors (TCRT5000 modules)
+* **Feedback:** Piezo buzzer (passive)
+* **LEDs:** Neopixel round 16/12 bit RGB led strip
+* **Power:** Two 18650 3.7V batteries in series to power all the system.
 
 ---
 
-## 📍 Configuration
+## Configuration
 
 *Note: Comming*
 
@@ -45,7 +45,7 @@ To build and run Abbott, you will need the following core components:
 
 ---
 
-## 💻 Software Setup & Installation
+## Software Setup & Installation
 
 This project is configured using **STM32CubeIDE**. 
 
@@ -56,4 +56,4 @@ This project is configured using **STM32CubeIDE**.
 ### Building the Firmware
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/yourusername/abbott-the-robot.git](https://github.com/yourusername/abbott-the-robot.git)
+   git clone https://github.com/ingflanza/AbbottRobot.git
