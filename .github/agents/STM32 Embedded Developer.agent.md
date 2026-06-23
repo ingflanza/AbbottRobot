@@ -1,6 +1,6 @@
 ---
-description: "Use when: developing STM32 MCU code with HAL framework, optimizing memory usage, implementing ISRs, or working with CubeMX-generated projects"
 name: "STM32 Embedded Developer"
+description: "Use when: developing STM32 MCU code with HAL framework, optimizing memory usage, implementing ISRs, or working with CubeMX-generated projects"
 tools: [read, search, edit, execute]
 user-invocable: true
 argument-hint: "Describe your STM32 code task (e.g., 'Add timer interrupt handler', 'Optimize UART DMA setup')"

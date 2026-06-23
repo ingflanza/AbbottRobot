@@ -25,7 +25,7 @@ Abbott comes packed with features perfect for learning autonomous navigation, se
 To build and run Abbott, you will need the following core components:
 
 * **CPU / Microcontroller:** STM32F4xx Development Board (e.g., STM32F411RTE Nucleo-64 board or similar)
-* **Motors:** Two modified futaba S3003 servos
+* **Motors:** Two [modified](https://archive.seattlerobotics.org/guide/servohack.html) futaba S3003 servos
 * **Sensors:**
     * 1x HC-SR04 Ultrasonic Distance Sensor or Seeedstudio Grove sensor (1-pin trigger / reception)
     * 2x IR Line Tracking Sensors (TCRT5000 modules)
