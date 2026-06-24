@@ -136,28 +136,28 @@ int main(void)
     /* Process ultrasonic measurement state machine */
     ultrasonic_measure();
 
-    /*
+    
     if (elapsed_check(start_time + 1000))
     {
       uint16_t line_sensor_1 = linesensor_read(LINE_SENSOR_1);
       uint16_t line_sensor_2 = linesensor_read(LINE_SENSOR_2);
 
-      printf("Distance: %lu ticks\r\n", ultrasonic_distance());
+      printf("Distance: %u mm\r\n", ultrasonic_distance());
       printf("Line Sensor 1: %u\r\n", line_sensor_1);
       printf("Line Sensor 2: %u\r\n", line_sensor_2);
       start_time = elapsed_set();
       
     }
-    */
     
+    /*
     motor_stop(MOTOR1);
     motor_stop(MOTOR2);
     HAL_Delay(2000);
 
-    /* Straight forward */
     motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 50);
     motor_run(MOTOR2, MOTOR_DIRECTION_FORWARD, 50);
     HAL_Delay(2500);
+    */
 
     /* Turn right */
     //motor_run(MOTOR1, MOTOR_DIRECTION_FORWARD, 50);

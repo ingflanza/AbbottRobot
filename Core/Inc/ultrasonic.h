@@ -32,9 +32,9 @@ void ultrasonic_measure(void);
 
 /**
   * @brief Get last measured distance
-  * @retval Distance (pulse width in timer ticks)
+  * @retval Distance in millimeters
   */
-uint32_t ultrasonic_distance(void);
+uint16_t ultrasonic_distance(void);
 
 /**
   * @brief Get the error flag

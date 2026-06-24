@@ -170,11 +170,17 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 
 /**
   * @brief Get last measured distance
-  * @retval Distance (pulse width in timer ticks)
+  * Converts the measured pulse width to distance in millimeters.
+  * Formula: distance_mm = (pulse_width_ticks * 343) / 84000
+  * Timer clock: APB1 = 42 MHz (84 MHz AHB / 2), so 1 tick = 1/42 us
+  * Sound propagates out and back, hence divided by 2.
+  * Speed of sound: 343 m/s = 0.343 mm/us
+  * distance_mm = (pulse_width_ticks / 42 us) * (343 m/s / 2) = pulse_width_ticks * 343 / 84000
+  * @retval Distance in millimeters (uint16_t)
   */
-uint32_t ultrasonic_distance(void)
+uint16_t ultrasonic_distance(void)
 {
-  return us_distance;
+  return (uint16_t)((us_distance * 343) / 84000);
 }
 
 /**
