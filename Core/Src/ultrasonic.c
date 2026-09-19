@@ -180,7 +180,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
   */
 uint16_t ultrasonic_distance(void)
 {
-  return (uint16_t)((us_distance * 343) / 84000);
+  return (uint16_t)(((us_distance * 343) / 168000));
 }
 
 /**
